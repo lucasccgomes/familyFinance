@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Navbar from './components/NavBar/NavBar'
 import { auth } from './services/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -25,6 +26,7 @@ const App = () => {
 
   return (
     <Router>
+      {user && <Navbar currentUser={user} />}
       <Routes>
         <Route 
           path="/login" 
