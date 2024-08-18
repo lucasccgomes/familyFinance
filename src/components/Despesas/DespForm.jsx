@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { db } from '../../services/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { useAuth } from '../../hook/useAuth';
@@ -21,29 +21,42 @@ const DespForm = () => {
       alert('Usuário não autenticado');
       return;
     }
-
+  
     const userId = user.uid;
     const despesaType = selectedDespesa === 'Despesa Fixa' ? 'despesaFixa' : format(selectedDate, 'MM-yy');
-
+  
     const despesaRef = selectedDespesa === 'Despesa Fixa'
       ? doc(db, 'users', userId, 'despesas', 'despesaFixa')
       : doc(db, 'users', userId, 'despesas', 'despesaExtra', format(selectedDate, 'yyyy'), despesaType);
-
-    await setDoc(despesaRef, {
-      [titulo]: {
-        titulo,
-        valor: parseFloat(valor),
-        data: selectedDate,
-        repeating,
-        userId: userId,
-      },
-    }, { merge: true });
-
+  
+    console.log('Salvando despesa em:', despesaRef.path); // Adicionar este log
+    console.log('Dados da despesa:', {
+      titulo,
+      valor: parseFloat(valor),
+      data: selectedDate,
+      repeating,
+      userId: userId,
+    });
+  
+    try {
+      await setDoc(despesaRef, {
+        [titulo]: {
+          titulo,
+          valor: parseFloat(valor),
+          data: selectedDate,
+          repeating,
+          userId: userId,
+        },
+      }, { merge: true });
+    } catch (error) {
+      console.error('Erro ao salvar a despesa:', error);
+    }
+  
     setTitulo('');
     setValor('');
-    setRepeating(false); // Reseta o estado de repetir mensalmente
+    setRepeating(false);
   };
-
+  
   const handlePreviousMonth = () => {
     setSelectedDate(subMonths(new Date(), 1));
     setSelectedButton('previous');
@@ -64,7 +77,6 @@ const DespForm = () => {
   };
 
   const formattedCurrentMonth = format(new Date(), 'MM/yy');
-  const formattedSelectedDate = format(selectedDate, 'MM/yy');
   const previousMonth = format(subMonths(new Date(), 1), 'MM/yy');
   const nextMonth = format(addMonths(new Date(), 1), 'MM/yy');
 

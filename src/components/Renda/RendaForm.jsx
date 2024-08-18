@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { db } from '../../services/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import { useAuth } from '../../hook/useAuth';
@@ -64,7 +64,6 @@ const RendaForm = () => {
   };
 
   const formattedCurrentMonth = format(new Date(), 'MM/yy');
-  const formattedSelectedDate = format(selectedDate, 'MM/yy');
   const previousMonth = format(subMonths(new Date(), 1), 'MM/yy');
   const nextMonth = format(addMonths(new Date(), 1), 'MM/yy');
 
