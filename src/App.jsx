@@ -1,9 +1,13 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Navbar from './components/NavBar/NavBar'
+import Renda from './pages/Renda';
+import Despesa from './pages/Despesa';
+import MesAtual from './pages/MesAtual';
+import Navbar from './components/NavBar/NavBar';
+import ProtectedRoute from './router/ProtectedRoute';
 import { auth } from './services/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -34,7 +38,35 @@ const App = () => {
         />
         <Route 
           path="/home" 
-          element={user ? <Home /> : <Navigate to="/login" />} 
+          element={
+            <ProtectedRoute user={user}>
+              <Home />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/rendas" 
+          element={
+            <ProtectedRoute user={user}>
+              <Renda />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/despesas" 
+          element={
+            <ProtectedRoute user={user}>
+              <Despesa />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/mesatual" 
+          element={
+            <ProtectedRoute user={user}>
+              <MesAtual />
+            </ProtectedRoute>
+          } 
         />
         <Route path="*" element={<Navigate to={user ? "/home" : "/login"} />} />
       </Routes>
