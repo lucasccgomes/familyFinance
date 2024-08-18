@@ -1,8 +1,5 @@
 // src/pages/Home.js
-import React from 'react';
 import { getAuth, signOut } from 'firebase/auth';
-import RendaForm from '../components/Renda/RendaForm';
-import DespForm from '../components/Despesas/DespForm';
 import ResumoFinan from '../components/ResumoFinan/ResumoFinan';
 
 const Home = () => {
@@ -27,8 +24,6 @@ const Home = () => {
           Deslogar
         </button>
         <ResumoFinan/>
-        <RendaForm/>
-        <DespForm/>
       </div>
     </div>
   );
